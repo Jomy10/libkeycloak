@@ -1,4 +1,11 @@
-#!~/.rubies/ruby-3.2.2/bin/ruby
+require 'colorize'
+
+CC = "clang"
+
+def sh(c)
+  puts c.grey
+  system c
+end
 
 cmd = ARGV.size >= 1 ? ARGV[0] : "build"
 
@@ -24,20 +31,36 @@ link = [
   "curl"
 ]
 
-sh = "clang \
-  -l#{link.join " -l"} \
-  -I#{include.join " -I" } \
-  #{sources.join " "} "
+linker_flags = "-l#{link.join " -l"}"
+include_flags = "-I#{include.join " -I" }"
 
 if cmd == "test"
-  sh << "-o build/a.out"
-end
+  sh "#{CC} \
+    #{linker_flags} \
+    #{include_flags} \
+    #{sources.join " "} -o build/a.out"
 
-puts sh
-system sh
+  sh "./build/a.out #{ARGV[1...].join " "}"
+elsif cmd == "build"
+  type = ARGV.size == 2 ? ARGV[1] : "static"
 
-if cmd == "test"
-  sh = "./build/a.out #{ARGV[1...].join " "}"
-  puts sh
-  exec sh
+  build_objs = proc { |ty|
+    for file in sources
+      sh "#{CC} -c \
+        #{include_flags} \
+        #{file} \
+        #{ty == :dyn ? "-fPIC" : ""} \
+        -o build/#{File.basename(file)}#{ty == :dyn ? ".dyn" : ""}.o"
+    end
+  }
+
+  if type == "static"
+    build_objs.call()
+    sh "ar -rcs build/libkeycloak.a #{sources.map { |f| "build/#{File.basename(f)}.o"}.join " "}"
+  elsif type == "dynamic"
+    build_objs.call(:dyn)
+    objs = sources.map { |f| "build/#{File.basename(f)}.dyn.o" }.join " "
+    sh "#{CC} #{linker_flags} #{objs} -shared -o build/libkeycloak.so"
+    sh "#{CC} #{linker_flags} #{objs} -dynamiclib -o build/libkeycloak.dylib"
+  end
 end

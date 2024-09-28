@@ -19,6 +19,7 @@ void keycloak_client_deinit(KeycloakClient* client);
 
 /// Returns a [CURL error code](https://curl.se/libcurl/c/libcurl-errors.html)
 /// response is filled with the response of the API call. This should be freed manually
+/// http_status_code s filled with the status code of the request
 int keycloak_get_token(
   const KeycloakClient* client,
   const char* user,

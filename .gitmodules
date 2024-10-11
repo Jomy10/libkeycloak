@@ -1,3 +1,6 @@
 [submodule "deps/cJSON"]
 	path = deps/cJSON
 	url = https://github.com/DaveGamble/cJSON.git
+[submodule "deps/l8w8jwt"]
+	path = deps/l8w8jwt
+	url = https://github.com/GlitchedPolygons/l8w8jwt.git

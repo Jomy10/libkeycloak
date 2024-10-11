@@ -1,8 +1,19 @@
+#include "keycloak/jwt.h"
 #include <stdio.h>
 #include <stdlib.h>
 
 #define KEYCLOAK_LOG_DEBUG 1
-#include "src/keycloak.h"
+#include <keycloak/keycloak.h>
+
+#define CHECK_ERR(err) CHECK_ERR2(err, ({}))
+#define CHECK_ERR2(err, custom_action) \
+  if (err.errcode != KeycloakE_OK) { \
+     char buf[1024]; \
+     keycloak_errmsg(e, buf); \
+     printf("Keycloak error (%i): %s\n", e.errcode, buf); \
+     custom_action; \
+     return 1; \
+  }
 
 char* read_to_string(char* file) {
   FILE* f = fopen(file, "r");
@@ -27,10 +38,15 @@ char* read_to_string(char* file) {
 }
 
 int main(int argc, char** argv) {
+  KeycloakError e;
+
   if (argc != 3) {
     fprintf(stderr, "Usage: %s [user] [password]\n", argv[0]);
     return 1;
   }
+
+  char* user = argv[1];
+  char* pass = argv[2];
 
   printf("Reading client config at keycloak.json\n");
   char* jsonfile = "keycloak.json";
@@ -40,27 +56,70 @@ int main(int argc, char** argv) {
     return 1;
   }
 
+  printf("Retrieving client...\n");
   KeycloakClient client;
-  keycloak_client_init_from_json(&client, jsonstr);
+  e = keycloak_create_client(&client, jsonstr, 0);
+  CHECK_ERR(e);
 
-  printf("-- Client info --\n");
-  printf("Realm: %s\n", client.realm);
-  printf("Client: %s\n", client.resource);
-  printf("Auth url: %s\n", client.auth_server_url);
+  printf("Retrieving token...\n");
+  KeycloakTokens tokens;
+  char* err_resp;
+  char* scopes[1];
+  scopes[0] = "openid";
+  e = keycloak_get_token(&client, user, pass, (const char**) scopes, 1, &tokens, &err_resp);
+  CHECK_ERR2(e, ({
+    if (e.errcode == KeycloakE_HTTP) {
+      printf("HTTP error: %s\n", err_resp);
+      free(err_resp);
+    }
+  }));
 
-  printf("-- Authenticating User --\n");
-  printf("User: %s\n", argv[1]);
-  printf("Password: %s\n", argv[2]);
+  printf("token: %s\n", tokens.access_token.token);
 
-  char* token_response = NULL;
-  long status_code;
-  int ret = keycloak_get_token(&client, argv[1], argv[2], &token_response, &status_code);
-  if (ret || status_code != 200) {
-    fprintf(stderr, "Couldn't retrieve token for user (return code %i, http status code %li)\n", ret, status_code);
+  printf("Refreshing token...\n");
+  KeycloakTokens refreshed_tokens;
+  e = keycloak_refresh_token(&client, tokens.refresh_token.token, (const char**) scopes, 1, &refreshed_tokens, &err_resp);
+  CHECK_ERR2(e, ({
+    if (e.errcode == KeycloakE_HTTP) {
+      printf("HTTP error: %s\n", err_resp);
+      free(err_resp);
+      return 1;
+    }
+  }));
+
+  keycloak_destroy_tokens(&tokens);
+  tokens = refreshed_tokens;
+
+  printf("Refreshed token: %s\n", refreshed_tokens.access_token.token);
+
+  printf("Getting userinfo...\n");
+  KeycloakUserinfo userinfo;
+  e = keycloak_get_userinfo(&client, &tokens, &userinfo, &err_resp);
+  CHECK_ERR2(e, ({
+    if (e.errcode == KeycloakE_HTTP) {
+      printf("HTTP error: %s\n", err_resp);
+      free(err_resp);
+      return 1;
+    }
+  }));
+
+  printf("Username: %s\n", userinfo.preferred_username);
+
+  printf("Validating token...\n");
+
+  KeycloakJWTValidationResult res;
+  e = keycloak_validate_jwt(&client, &tokens.access_token, &res);
+  CHECK_ERR(e);
+  if (res == KeycloakV_VALID) {
+    printf("Token valid\n");
+  } else {
+    printf("Token invalid (reason %s)\n", keycloak_jwt_validation_reason_string(res));
   }
-  printf("%s\n", token_response);
 
-  keycloak_client_deinit(&client);
+  // we can destroy the copied tokens instead of the original `refreshed_tokens`
+  // After this call we cannot use either of them
+  keycloak_destroy_tokens(&tokens);
+  keycloak_destroy_client(&client);
 
   return 0;
 }

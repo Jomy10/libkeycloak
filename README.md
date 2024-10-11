@@ -68,3 +68,11 @@ end
 - Request a token for a user
 
 See [example.c](example.c).
+
+## Questions
+
+Feel free to ask any questions regarding the library as an issue.
+
+## License
+
+Licensed under the [MIT license](LICENSE).

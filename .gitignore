@@ -1,4 +1,8 @@
+**/.DS_Store
 compile_commands.json
 build
 .cache
 keycloak.json
+test.rb
+test.sh
+

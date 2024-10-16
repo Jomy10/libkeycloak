@@ -10,10 +10,13 @@ A wrapper for the Keycloak API in C. Includes some bindings for different langua
 
 see [Building](#building).
 
-#### Ruby
+#### Ruby [![Gem Version](https://badge.fury.io/rb/libkeycloak.svg)](https://badge.fury.io/rb/libkeycloak)
 
-- Install the C library as a [dynamic library](dynamic-library)
-- Include the ruby file at `bindings/ruby/keycloak.rb` in your project
+- Install the C library as a [dynamic library](#dynamic-library)
+- Install the gem
+```sh
+gem install libkeycloak
+```
 
 <!-- - OR: `gem install keycloak-api` -->
 

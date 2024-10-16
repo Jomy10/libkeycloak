@@ -3,3 +3,7 @@ build
 .cache
 keycloak.json
 test.sh
+compile_commands.json
+
+# Ruby
+bindings/ruby/*.gem

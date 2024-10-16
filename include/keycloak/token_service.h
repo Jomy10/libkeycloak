@@ -38,7 +38,7 @@ KeycloakError keycloak_get_token(
 
 KeycloakError keycloak_refresh_token(
   const KeycloakClient* __nonnull client,
-  const char* __nonnull refresh_token,
+  const KeycloakToken refresh_token,
   const char** __nullable scopes,
   const int scopes_len,
   KeycloakTokens* __nonnull tokens,
@@ -60,7 +60,7 @@ void keycloak_destroy_userinfo(KeycloakUserinfo* info);
 
 KeycloakError keycloak_get_userinfo(
   const KeycloakClient* __nonnull client,
-  KeycloakTokens* __nonnull tokens,
+  const KeycloakTokens* __nonnull tokens,
   KeycloakUserinfo* __nonnull userinfo,
   char** __nullable err_response
 );

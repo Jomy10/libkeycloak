@@ -81,6 +81,7 @@ KeycloakError _keycloak_decode_and_validate_jwt(
     err.data.code = decode_result;
     return err;
   }
+
   *valid = (KeycloakJWTValidationResult) validation_result;
 
   return err;
@@ -114,9 +115,9 @@ KeycloakError keycloak_validate_jwt_ex(
   const char* validate_aud, const int validate_aud_length,
   const char* validate_jti, const int validate_jti_length,
   const char* validate_typ, const int validate_typ_length,
-  const int validate_exp, const int exp_tolerance_seconds,
-  const int validate_nbf, const int nbf_tolerance_seconds,
-  const int validate_iat, const int iat_tolerance_seconds,
+  const bool validate_exp, const int exp_tolerance_seconds,
+  const bool validate_nbf, const int nbf_tolerance_seconds,
+  const bool validate_iat, const int iat_tolerance_seconds,
   KeycloakJWTValidationResult* valid
 ) {
   return _keycloak_decode_and_validate_jwt(
@@ -165,9 +166,9 @@ KeycloakError keycloak_decode_and_validate_jwt_ex(
   const char* validate_aud, const int validate_aud_length,
   const char* validate_jti, const int validate_jti_length,
   const char* validate_typ, const int validate_typ_length,
-  const int validate_exp, const int exp_tolerance_seconds,
-  const int validate_nbf, const int nbf_tolerance_seconds,
-  const int validate_iat, const int iat_tolerance_seconds,
+  const bool validate_exp, const int exp_tolerance_seconds,
+  const bool validate_nbf, const int nbf_tolerance_seconds,
+  const bool validate_iat, const int iat_tolerance_seconds,
   KeycloakJWTValidationResult* valid,
   KeycloakJWT* jwt
 ) {

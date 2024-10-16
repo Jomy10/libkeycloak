@@ -3,6 +3,7 @@
 
 #include "client.h"
 #include "token_service.h"
+#include "util/decorators.h"
 
 typedef enum {
   /**
@@ -61,6 +62,8 @@ typedef struct {
   size_t len;
 } KeycloakJWT;
 
+void keycloak_destroy_jwt(KeycloakJWT* __nonnull jwt);
+
 typedef enum {
   KeycloakCT_String = 0,
   KeycloakCT_Int = 1,
@@ -106,11 +109,11 @@ KeycloakError keycloak_validate_jwt_ex(
   const int validate_jti_length,
   const char* validate_typ,
   const int validate_typ_length,
-  const int validate_exp,
+  const bool validate_exp,
   const int exp_tolerance_seconds,
-  const int validate_nbf,
+  const bool validate_nbf,
   const int nbf_tolerance_seconds,
-  const int validate_iat,
+  const bool validate_iat,
   const int iat_tolerance_seconds,
   KeycloakJWTValidationResult* __nonnull valid
 );
@@ -135,11 +138,11 @@ KeycloakError keycloak_decode_and_validate_jwt_ex(
   const int validate_jti_length,
   const char* validate_typ,
   const int validate_typ_length,
-  const int validate_exp,
+  const bool validate_exp,
   const int exp_tolerance_seconds,
-  const int validate_nbf,
+  const bool validate_nbf,
   const int nbf_tolerance_seconds,
-  const int validate_iat,
+  const bool validate_iat,
   const int iat_tolerance_seconds,
   KeycloakJWTValidationResult* __nonnull valid,
   KeycloakJWT* __nullable out_jwt

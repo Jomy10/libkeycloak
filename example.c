@@ -78,7 +78,7 @@ int main(int argc, char** argv) {
 
   printf("Refreshing token...\n");
   KeycloakTokens refreshed_tokens;
-  e = keycloak_refresh_token(&client, tokens.refresh_token.token, (const char**) scopes, 1, &refreshed_tokens, &err_resp);
+  e = keycloak_refresh_token(&client, tokens.refresh_token, (const char**) scopes, 1, &refreshed_tokens, &err_resp);
   CHECK_ERR2(e, ({
     if (e.errcode == KeycloakE_HTTP) {
       printf("HTTP error: %s\n", err_resp);
@@ -114,6 +114,53 @@ int main(int argc, char** argv) {
     printf("Token valid\n");
   } else {
     printf("Token invalid (reason %s)\n", keycloak_jwt_validation_reason_string(res));
+  }
+
+  printf("Decoding and reading jwt...\n");
+  KeycloakJWT jwt;
+  e = keycloak_decode_and_validate_jwt_ex(
+    &client,
+    &tokens.access_token,
+    NULL, 0,
+    NULL, 0,
+    NULL, 0,
+    NULL, 0,
+    NULL, 0,
+    true, 0,
+    false, 0,
+    false, 0,
+    &res,
+    &jwt
+  );
+  CHECK_ERR(e);
+  if (res != KeycloakV_VALID) {
+    printf("Token invalid (reason %s)\n", keycloak_jwt_validation_reason_string(res));
+  }
+
+  KeycloakJWTClaim claim;
+  keycloak_jwt_get_claim(&jwt, "iss", &claim);
+  printf("iss = ");
+  switch (claim.type) {
+    case KeycloakCT_String:
+      printf("%s\n", claim.value.stringvalue);
+      break;
+    case KeycloakCT_Int:
+      printf("%i\n", claim.value.intvalue);
+      break;
+    case KeycloakCT_Double:
+      printf("%f\n", claim.value.doublevalue);
+      break;
+    case KeycloakCT_Bool:
+      printf("%s\n", claim.value.boolvalue == true ? "true" : "false");
+      break;
+    case KeycloakCT_Null:
+      printf("null\n");
+      break;
+    case KeycloakCT_Array:
+    case KeycloakCT_Object:
+    case KeycloakCT_Other:
+      printf("%p\n", claim.value.datavalue);
+      break;
   }
 
   // we can destroy the copied tokens instead of the original `refreshed_tokens`

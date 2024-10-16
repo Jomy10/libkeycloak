@@ -44,6 +44,8 @@ CURLcode _keycloak_http_response_code(CURL* curl) {
   return c;
 }
 
+#include <assert.h>
+
 void keycloak_destroy_tokens(KeycloakTokens* tokens) {
   cJSON_Delete(tokens->_json);
 }
@@ -154,12 +156,14 @@ _kc_token_service_ret:
 
 KeycloakError keycloak_refresh_token(
   const KeycloakClient* client,
-  const char* refresh_token,
+  const KeycloakToken _refresh_token,
   const char** scopes,
   const int scopes_len,
   KeycloakTokens* tokens,
   char** err_response
 ) {
+  char* refresh_token = _refresh_token.token;
+
   KeycloakError err;
   err.errcode = KeycloakE_OK;
 
@@ -272,7 +276,7 @@ void keycloak_destroy_userinfo(KeycloakUserinfo *info) {
 
 KeycloakError keycloak_get_userinfo(
   const KeycloakClient* client,
-  KeycloakTokens* tokens,
+  const KeycloakTokens* tokens,
   KeycloakUserinfo* userinfo,
   char** err_response
 ) {

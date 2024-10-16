@@ -47,27 +47,29 @@ In settings, make sure "Client authentication" is turned on.
 
 ## Examples
 
-### Ruby
+To run the examples, you need a keycloak.json. You can obtain it from going to a Client in the Keycloak console
+and clicking "action" > "Download adapter config" and choose JSON.
 
-- Request a token for a user
-```ruby
-require 'JSON'
-require_relative 'keycloak.rb'
+Paste the file in the root of this repository to try out the examples.
 
-client = Keycloak::Client.new(File.read("keycloak.json"))
-token = client.get_token("username", "password")
-if token.status_code == 200
-  puts JSON.parse(token.response)["access_token"]
-else
-  puts "Got HTTP code #{token.status_code}, response: #{token.response}"
-end
-```
+All the example code can be found in the root of this repository as `example.[lang]`.
+
+The `[user]` and `[pass]` arguments are used to log in to a user in the keycloak realm specified by the `keycloak.json`.
 
 ### C
 
-- Request a token for a user
+```sh
+ruby build.rb test
+./build/test/a.out [user] [pass]
+```
 
-See [example.c](example.c).
+### Ruby
+
+```sh
+ruby build.rb build dynamic
+LD_LIBRARY_PATH="$LD_LIBRARY_PATH:$(pwd)/build" ruby example.rb [user] [pass]
+# OR: copy the dynamic library to a path in LD_LIBRARY_PATH
+```
 
 ## Questions
 

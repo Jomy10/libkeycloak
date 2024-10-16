@@ -1,0 +1,155 @@
+[
+  {
+    "arguments": [
+      "/usr/bin/clang",
+      "-c",
+      "-Wno-nullability-completeness",
+      "-Ideps",
+      "-Iinclude",
+      "-Ibuild/l8w8jwt/l8w8jwt/include",
+      "-fPIC",
+      "-o",
+      "build/cJSON.c.dyn.o",
+      "deps/cJSON/cJSON.c"
+    ],
+    "directory": "/Users/jonaseveraert/Documents/projects/keycloak",
+    "file": "/Users/jonaseveraert/Documents/projects/keycloak/deps/cJSON/cJSON.c",
+    "output": "/Users/jonaseveraert/Documents/projects/keycloak/build/cJSON.c.dyn.o"
+  },
+  {
+    "arguments": [
+      "/usr/bin/clang",
+      "-c",
+      "-Wno-nullability-completeness",
+      "-Ideps",
+      "-Iinclude",
+      "-Ibuild/l8w8jwt/l8w8jwt/include",
+      "-fPIC",
+      "-o",
+      "build/str_builder.c.dyn.o",
+      "deps/str_builder/str_builder.c"
+    ],
+    "directory": "/Users/jonaseveraert/Documents/projects/keycloak",
+    "file": "/Users/jonaseveraert/Documents/projects/keycloak/deps/str_builder/str_builder.c",
+    "output": "/Users/jonaseveraert/Documents/projects/keycloak/build/str_builder.c.dyn.o"
+  },
+  {
+    "arguments": [
+      "/usr/bin/clang",
+      "-c",
+      "-Wno-nullability-completeness",
+      "-Ideps",
+      "-Iinclude",
+      "-Ibuild/l8w8jwt/l8w8jwt/include",
+      "-fPIC",
+      "-o",
+      "build/account_service.c.dyn.o",
+      "src/account_service.c"
+    ],
+    "directory": "/Users/jonaseveraert/Documents/projects/keycloak",
+    "file": "/Users/jonaseveraert/Documents/projects/keycloak/src/account_service.c",
+    "output": "/Users/jonaseveraert/Documents/projects/keycloak/build/account_service.c.dyn.o"
+  },
+  {
+    "arguments": [
+      "/usr/bin/clang",
+      "-c",
+      "-Wno-nullability-completeness",
+      "-Ideps",
+      "-Iinclude",
+      "-Ibuild/l8w8jwt/l8w8jwt/include",
+      "-fPIC",
+      "-o",
+      "build/client.c.dyn.o",
+      "src/client.c"
+    ],
+    "directory": "/Users/jonaseveraert/Documents/projects/keycloak",
+    "file": "/Users/jonaseveraert/Documents/projects/keycloak/src/client.c",
+    "output": "/Users/jonaseveraert/Documents/projects/keycloak/build/client.c.dyn.o"
+  },
+  {
+    "arguments": [
+      "/usr/bin/clang",
+      "-c",
+      "-Wno-nullability-completeness",
+      "-Ideps",
+      "-Iinclude",
+      "-Ibuild/l8w8jwt/l8w8jwt/include",
+      "-fPIC",
+      "-o",
+      "build/error.c.dyn.o",
+      "src/error.c"
+    ],
+    "directory": "/Users/jonaseveraert/Documents/projects/keycloak",
+    "file": "/Users/jonaseveraert/Documents/projects/keycloak/src/error.c",
+    "output": "/Users/jonaseveraert/Documents/projects/keycloak/build/error.c.dyn.o"
+  },
+  {
+    "arguments": [
+      "/usr/bin/clang",
+      "-c",
+      "-Wno-nullability-completeness",
+      "-Ideps",
+      "-Iinclude",
+      "-Ibuild/l8w8jwt/l8w8jwt/include",
+      "-fPIC",
+      "-o",
+      "build/jwt.c.dyn.o",
+      "src/jwt.c"
+    ],
+    "directory": "/Users/jonaseveraert/Documents/projects/keycloak",
+    "file": "/Users/jonaseveraert/Documents/projects/keycloak/src/jwt.c",
+    "output": "/Users/jonaseveraert/Documents/projects/keycloak/build/jwt.c.dyn.o"
+  },
+  {
+    "arguments": [
+      "/usr/bin/clang",
+      "-c",
+      "-Wno-nullability-completeness",
+      "-Ideps",
+      "-Iinclude",
+      "-Ibuild/l8w8jwt/l8w8jwt/include",
+      "-fPIC",
+      "-o",
+      "build/token_service.c.dyn.o",
+      "src/token_service.c"
+    ],
+    "directory": "/Users/jonaseveraert/Documents/projects/keycloak",
+    "file": "/Users/jonaseveraert/Documents/projects/keycloak/src/token_service.c",
+    "output": "/Users/jonaseveraert/Documents/projects/keycloak/build/token_service.c.dyn.o"
+  },
+  {
+    "arguments": [
+      "/usr/bin/clang",
+      "-c",
+      "-Wno-nullability-completeness",
+      "-Ideps",
+      "-Iinclude",
+      "-Ibuild/l8w8jwt/l8w8jwt/include",
+      "-fPIC",
+      "-o",
+      "build/curl.c.dyn.o",
+      "src/util/curl.c"
+    ],
+    "directory": "/Users/jonaseveraert/Documents/projects/keycloak",
+    "file": "/Users/jonaseveraert/Documents/projects/keycloak/src/util/curl.c",
+    "output": "/Users/jonaseveraert/Documents/projects/keycloak/build/curl.c.dyn.o"
+  },
+  {
+    "arguments": [
+      "/usr/bin/clang",
+      "-c",
+      "-Wno-nullability-completeness",
+      "-Ideps",
+      "-Iinclude",
+      "-Ibuild/l8w8jwt/l8w8jwt/include",
+      "-fPIC",
+      "-o",
+      "build/postfield.c.dyn.o",
+      "src/util/postfield.c"
+    ],
+    "directory": "/Users/jonaseveraert/Documents/projects/keycloak",
+    "file": "/Users/jonaseveraert/Documents/projects/keycloak/src/util/postfield.c",
+    "output": "/Users/jonaseveraert/Documents/projects/keycloak/build/postfield.c.dyn.o"
+  }
+]
